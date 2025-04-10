@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gerenciamento de Agendamentos</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #d0e7ff, #a3d8f4, #e0f7fa);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 20px;
+    }
+    .form-container, .table-container {
+      background: white;
+      border-radius: 15px;
+      padding: 30px;
+      width: 100%;
+      max-width: 900px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      color: #0d3b66;
+      text-align: center;
+      margin-bottom: 25px;
+    }
+    .btn-primary {
+      background-color: #1e88e5;
+      border: none;
+      font-weight: 600;
+    }
+    .btn-primary:hover {
+      background-color: #1565c0;
+    }
+    .btn-voltar {
+      background-color: #6c757d;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-weight: 500;
+    }
+    .btn-voltar:hover {
+      background-color: #495057;
+    }
+    .filter-container {
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Botão Voltar -->
+    <a href="inicial.html" class="btn-voltar mb-3">← Voltar</a>
+
+    <div class="form-container">
+      <h1>Cadastro de Agendamento de Entrevista</h1>
+      <form id="agendamentoForm">
+        <div class="mb-3">
+          <label for="nome" class="form-label">Nome do Candidato</label>
+          <input type="text" class="form-control" id="nome" placeholder="Nome completo do candidato" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="cargo" class="form-label">Cargo</label>
+          <input type="text" class="form-control" id="cargo" placeholder="Cargo da vaga" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="data" class="form-label">Data da Entrevista</label>
+          <input type="datetime-local" class="form-control" id="data" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="local" class="form-label">Recrutadora</label>
+          <input type="text" class="form-control" id="local" placeholder="Recrutadora da entrevista" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100 mt-3">Cadastrar Agendamento</button>
+      </form>
+    </div>
+
+    <div class="table-container mt-5">
+      <h2>Agendamentos de Entrevistas</h2>
+      
+      <!-- Filtro por nome -->
+      <div class="filter-container">
+        <label for="filterNome" class="form-label">Filtrar por Nome:</label>
+        <input type="text" id="filterNome" class="form-control" placeholder="Digite o nome do candidato">
+      </div>
+
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Nome do Candidato</th>
+            <th>Cargo</th>
+            <th>Data da Entrevista</th>
+            <th>Local</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody id="agendamentosTabela">
+          <!-- A tabela será preenchida dinamicamente -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Função para salvar e exibir os agendamentos
+    document.getElementById('agendamentoForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      // Obter os valores do formulário
+      const nome = document.getElementById('nome').value;
+      const cargo = document.getElementById('cargo').value;
+      const data = document.getElementById('data').value;
+      const local = document.getElementById('local').value;
+
+      // Verificar se todos os campos foram preenchidos
+      if (!nome || !cargo || !data || !local) {
+        alert('Por favor, preencha todos os campos.');
+        return;
+      }
+
+      // Criar o objeto de agendamento
+      const agendamento = {
+        nome: nome,
+        cargo: cargo,
+        data: data,
+        local: local
+      };
+
+      // Verificar se já existem agendamentos no localStorage
+      let agendamentos = JSON.parse(localStorage.getItem('agendamentos')) || [];
+
+      // Adicionar o novo agendamento
+      agendamentos.push(agendamento);
+
+      // Salvar no localStorage
+      localStorage.setItem('agendamentos', JSON.stringify(agendamentos));
+
+      // Atualizar a tabela com os novos agendamentos
+      atualizarTabela();
+
+      // Limpar o formulário
+      document.getElementById('agendamentoForm').reset();
+    });
+
+    // Função para atualizar a tabela de agendamentos
+    function atualizarTabela(filtroNome = '') {
+      // Obter os agendamentos do localStorage
+      const agendamentos = JSON.parse(localStorage.getItem('agendamentos')) || [];
+
+      // Limpar a tabela
+      const tabela = document.getElementById('agendamentosTabela');
+      tabela.innerHTML = '';
+
+      // Preencher a tabela com os agendamentos filtrados
+      agendamentos.filter(agendamento => agendamento.nome.toLowerCase().includes(filtroNome.toLowerCase()))
+                  .forEach((agendamento, index) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${index + 1}</td>
+          <td>${agendamento.nome}</td>
+          <td>${agendamento.cargo}</td>
+          <td>${new Date(agendamento.data).toLocaleString()}</td>
+          <td>${agendamento.local}</td>
+          <td>
+            <button class="btn btn-danger btn-sm" onclick="excluirAgendamento(${index})">Excluir</button>
+          </td>
+        `;
+        tabela.appendChild(tr);
+      });
+    }
+
+    // Função para excluir um agendamento
+    function excluirAgendamento(index) {
+      let agendamentos = JSON.parse(localStorage.getItem('agendamentos')) || [];
+      agendamentos.splice(index, 1); // Remover o agendamento
+      localStorage.setItem('agendamentos', JSON.stringify(agendamentos)); // Atualizar no localStorage
+      atualizarTabela(); // Atualizar a tabela
+    }
+
+    // Função para filtrar a tabela com base no nome do candidato
+    document.getElementById('filterNome').addEventListener('input', function(event) {
+      const filtroNome = event.target.value;
+      atualizarTabela(filtroNome); // Atualiza a tabela com o filtro
+    });
+
+    // Atualizar a tabela ao carregar a página
+    window.onload = atualizarTabela;
+  </script>
+</body>
+</html>

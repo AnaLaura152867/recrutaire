@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cadastro de Usuário - RECRUITER</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #d0e7ff, #a3d8f4, #e0f7fa);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 20px;
+      position: relative;
+    }
+
+    .form-container {
+      background: white;
+      border-radius: 15px;
+      padding: 30px;
+      width: 100%;
+      max-width: 500px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      font-weight: 600;
+      color: #0d3b66;
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .form-label {
+      font-weight: 500;
+    }
+
+    .btn-primary {
+      background-color: #1e88e5;
+      border: none;
+      font-weight: 600;
+    }
+
+    .btn-primary:hover {
+      background-color: #1565c0;
+    }
+
+    .btn-voltar {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background-color: #6c757d;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-weight: 500;
+      text-decoration: none;
+    }
+
+    .btn-voltar:hover {
+      background-color: #495057;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Botão Voltar -->
+  <a href="index.html" class="btn-voltar">← Voltar</a>
+
+  <div class="form-container">
+    <h1>Cadastro de Usuário</h1>
+    <form onsubmit="event.preventDefault(); alert('Usuário cadastrado com sucesso!');">
+      <div class="mb-3">
+        <label for="nome" class="form-label">Nome Completo</label>
+        <input type="text" class="form-control" id="nome" placeholder="Digite seu nome" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="email" class="form-label">E-mail</label>
+        <input type="email" class="form-control" id="email" placeholder="nome@email.com" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="usuario" class="form-label">Nome de Usuário</label>
+        <input type="text" class="form-control" id="usuario" placeholder="Ex: jordana123" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="senha" class="form-label">Senha</label>
+        <input type="password" class="form-control" id="senha" placeholder="Digite uma senha" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="confirma" class="form-label">Confirmar Senha</label>
+        <input type="password" class="form-control" id="confirma" placeholder="Repita a senha" required>
+      </div>
+
+      <button href="inicial.html" class="btn btn-primary w-100 mt-3">Cadastrar</button>
+    </form>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

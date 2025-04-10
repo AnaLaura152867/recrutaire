@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cadastro de Candidato - RECRUITER</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #d0e7ff, #a3d8f4, #e0f7fa);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 20px;
+      position: relative;
+    }
+
+    .form-container {
+      background: white;
+      border-radius: 15px;
+      padding: 30px;
+      width: 100%;
+      max-width: 600px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      font-weight: 600;
+      color: #0d3b66;
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .form-label {
+      font-weight: 500;
+    }
+
+    .btn-primary {
+      background-color: #1e88e5;
+      border: none;
+      font-weight: 600;
+    }
+
+    .btn-primary:hover {
+      background-color: #1565c0;
+    }
+
+    .btn-voltar {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background-color: #6c757d;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-weight: 500;
+      text-decoration: none;
+    }
+
+    .btn-voltar:hover {
+      background-color: #495057;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Botão Voltar -->
+  <a href="inicial.html" class="btn-voltar">← Voltar</a>
+
+  <div class="form-container">
+    <h1>Cadastro de Candidato</h1>
+    <form id="cadastroForm">
+      <div class="mb-3">
+        <label for="fonte" class="form-label">Fonte</label>
+        <select class="form-control" id="fonte" required>
+          <option value="">Selecione a fonte</option>
+          <option value="LinkedIn">LINKEDIN</option>
+          <option value="Indicação">INDICAÇÃO</option>
+          <option value="Tráfego">TRAFEGO</option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label for="nome" class="form-label">Nome completo</label>
+        <input type="text" class="form-control" id="nome" placeholder="Nome completo do candidato" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="telefone" class="form-label">Telefone</label>
+        <input type="tel" class="form-control" id="telefone" placeholder="(00) 00000-0000" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="cidade" class="form-label">Cidade</label>
+        <select class="form-control" id="cidade" required>
+          <option value="">Selecione a cidade</option>
+          <option value="Passo Fundo">Passo Fundo</option>
+          <option value="Marau">Marau</option>
+          <option value="Ronda Alta">Ronda Alta</option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label for="recrutadora" class="form-label">Recrutadora</label>
+        <input type="text" class="form-control" id="recrutadora" placeholder="Nome da recrutadora" required>
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100 mt-3">Cadastrar</button>
+    </form>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Função para salvar o candidato no localStorage
+    document.getElementById('cadastroForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      // Obter os valores do formulário
+      const fonte = document.getElementById('fonte').value;
+      const nome = document.getElementById('nome').value;
+      const telefone = document.getElementById('telefone').value;
+      const cidade = document.getElementById('cidade').value;
+      const recrutadora = document.getElementById('recrutadora').value;
+
+      // Verificar se todos os campos foram preenchidos
+      if (!fonte || !nome || !telefone || !cidade || !recrutadora) {
+        alert('Por favor, preencha todos os campos.');
+        return;
+      }
+
+      // Criar um objeto candidato com os campos necessários
+      const candidato = {
+        fonte: fonte,
+        nome: nome,
+        telefone: telefone,
+        cidade: cidade,
+        recrutadora: recrutadora,
+        status: 'Não Iniciado',  // Status padrão
+        contato: 'Sem Contato',  // Contato padrão
+        dataModificacao: 'Sem Contato'  // Data de modificação padrão
+      };
+
+      // Verificar se já existem candidatos no localStorage
+      let candidatos = JSON.parse(localStorage.getItem('candidatos')) || [];
+
+      // Adicionar o novo candidato ao array
+      candidatos.push(candidato);
+
+      // Salvar novamente no localStorage
+      localStorage.setItem('candidatos', JSON.stringify(candidatos));
+
+      // Exibir um alerta de sucesso
+      alert('Candidato cadastrado com sucesso!');
+
+      // Limpar o formulário
+      document.getElementById('cadastroForm').reset();
+    });
+  </script>
+</body>
+</html>
